@@ -1,3 +1,4 @@
+/*
 Telefon
 1.  Apstraktna klasu Telefon ima sledeće atribute:
 	tip telefonskog broja (mobilni ili fiksni)
@@ -28,7 +29,7 @@ Napisati metode ToString koja vraća podatke, apstraktnu metodu Racun koja izra�
 4. Proširite klase za sledeće podatke naziv operatera i id korisnika i ime i prezime korisnika.
 
 5. U glavnom programu testirati klase, kreirati nekoliko objekata, ispisati sve podatke za objekte kao i vrednosti računa.
-
+*/
 // dopuniti kod
 
 using System;
