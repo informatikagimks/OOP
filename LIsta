@@ -1,0 +1,264 @@
+/*
+Lista
+Napisati klase Element, Lista za predstavljanje elementa liste i liste brojeva.
+Klasa Element:
+• ima atribute broj i sledeći koji predstavlja sledeći element u listi.
+• Može se konstruisati ako je prosleđen broj ili ako je prosleđen broj i sledeći element u
+listi.
+Klasa Lista ima:
+• Atribut prvi koji predstavlja prvi element u listi, odnosno početak liste.
+• Metodu Prazni() koja prazni listu.
+• Metodu Duzina() koja vraća dužinu liste
+• Metodu NaPocetak(T) koja smešta element na početak liste.
+• Metodu NaKraj(T) koja smešta element na kraj liste.
+• Metodu Umetni(T) koja smešta element u uređenu listu.
+• Metodu Izostavi(T) koja briše iz liste sve članove koji su jednaki prosleđenoj vrednosti.
+• Metodu ToString() koja formira tekstualni oblik liste.
+Napisati klasu ListaTest za rad sa listom. 
+Implementirati 
+• Metodu Citaj1() koja učitava članove i unosi u listu čuvajući poredak, odnosno dodaje
+članove na kraj liste.
+• Metodu Citaj2() koja učitava članove i unosi u listu u obrnutom redosledu, odnosno
+dodaje članove na početak liste.
+Treba implementirati opcije dodavanje broja na
+početak liste, dodavanje broja na kraj liste, umetanje broja u uređenu listu, izostavljanje elementa iz liste, brisanje svih elemenata liste, čitanje uz čuvanje redosleda brojeva, čitanje  uz
+obrtanje redosleda brojeva, određivanje dužine  liste, ispisivanje liste.
+*/
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ListaApp
+{
+    public class Element<T>
+    {
+        public T broj; // broj
+        public Element<T> sledeci; // Pokazivac na sledeci
+        public Element(T b)
+        {
+            broj = b;
+        }
+        public Element(T b, Element<T> s)
+        {
+            broj = b;
+            sledeci = s;
+        }
+    }
+
+   class Lista<T> : IEnumerable<T>
+   {
+       public Element<T> prvi;
+       //Lista<T> lista;
+
+
+       public void Prazni() {
+           Element<T> tek, tmp = prvi;
+           while (tmp.sledeci != null)
+           {
+               tek = tmp;
+               tmp = null;
+               tmp = tek.sledeci;
+               
+           }
+       }
+       public int Duzina() {
+           int brojEl = 1;
+           Element<T> tmp = prvi;
+           while (tmp.sledeci != null)
+           {
+               tmp = tmp.sledeci;
+               brojEl++;
+           }
+           return brojEl;
+       }
+
+       public void NaPocetak(T b)
+       {
+           Element<T> tmp = new Element<T>(b);
+           tmp.sledeci = prvi;
+           prvi = tmp;
+           while (tmp.sledeci != null)
+           {
+               tmp = tmp.sledeci;
+           }
+       }
+
+       public void NaKraj(T b)
+       {
+           Element<T> tmp = prvi;
+           if (tmp == null) 
+           { 
+               tmp = new Element<T>(b,null);
+               prvi = tmp;
+           }
+           else { 
+           while (tmp.sledeci != null)
+           {
+               tmp = tmp.sledeci;
+           }
+           tmp.sledeci = new Element<T>(b);
+           }
+           
+       }
+
+       public T this[int indeks]  
+       {
+           get
+           {
+               Element<T> tmp = prvi;
+               for (int i = 0; i < indeks; i++)
+               {
+                   tmp = tmp.sledeci;
+               }
+               return tmp.broj;
+           }
+           set
+           {
+               Element<T> tmp = prvi;
+               for (int i = 0; i < indeks; i++)
+               {
+                   tmp = tmp.sledeci;
+               }
+               tmp.broj = value;
+           }
+       }
+       public void Sortiraj()
+       {
+           int d = Duzina();
+           for (int i = 0; i < d; i++)
+           {
+               for (int j = i + 1; j < d; j++)
+               {
+                   IComparable<T> v1 = (IComparable<T>)this[i];
+                   IComparable<T> v2 = (IComparable<T>)this[j];
+                   
+                   if (v1.CompareTo((T)v2)==1)
+                   {
+                       this[i] = (T)v2;
+                       this[j] = (T)v1;
+                   }
+               }
+           }
+       }
+
+       public void Umetni(T nv)
+       {
+           Element<T>novi=null, tmp = prvi;
+           IComparable<T> broj = (IComparable<T>)tmp.broj;
+           
+           while (broj.CompareTo(nv) == -1 && tmp.sledeci!=null)
+           {
+               novi = tmp;
+               tmp =tmp.sledeci;
+               broj = (IComparable<T>)tmp.broj;
+           }
+           if (novi==null)
+           {
+               novi = new Element<T>(nv);
+               novi.sledeci = prvi;
+           }
+           if(tmp.sledeci != null) { 
+               tmp = novi;
+               novi =new Element<T>(nv);
+               novi.sledeci = tmp.sledeci;
+               tmp.sledeci = novi;
+           }
+           else
+           {
+               novi = new Element<T>(nv);
+               novi.sledeci = tmp.sledeci;
+               tmp.sledeci = novi;
+           }
+
+       }
+
+       public void Izostavi(T nv)
+       {
+           Element<T> tek=null, tmp = prvi;
+           IComparable<T> broj = (IComparable<T>)tmp.broj;
+           while (broj.CompareTo(nv) != 0 && tmp.sledeci != null)
+           {
+               tek = tmp;
+               tmp = tmp.sledeci;
+               broj = (IComparable<T>)tmp.broj;
+           }
+           if(tmp==prvi) prvi = tmp.sledeci;
+           else
+           tek.sledeci = tmp.sledeci;
+       }
+
+       public override string ToString()
+       {
+           string lista="";
+           Element<T> tmp = prvi;
+           if(tmp!=null) {
+           while (tmp.sledeci != null)
+           {
+               lista += tmp.broj.ToString();
+               lista += " ";
+                   tmp = tmp.sledeci;
+           }
+           lista += tmp.broj.ToString(); }
+           return lista;
+       }
+
+       public IEnumerable<T> GetEnumerator()
+       {
+           throw new NotImplementedException();
+       }
+       IEnumerator<T> IEnumerable<T>.GetEnumerator()
+       {
+           throw new NotImplementedException();
+       }
+       IEnumerator IEnumerable.GetEnumerator()
+       {
+           throw new NotImplementedException();
+       }
+   }
+	 
+	 
+    class Program
+    {
+        static Lista<int> lista1 = new Lista<int>();
+        static Lista<int> lista2 = new Lista<int>();
+        static void Main(string[] args)
+        {
+            Citaj1();
+            Console.WriteLine(lista1.ToString());
+            lista1.NaKraj(999);
+            Console.WriteLine(lista1.ToString());
+            lista1.Sortiraj();
+            lista1.Umetni(545);
+            Console.WriteLine(lista1.ToString());
+            lista1.Izostavi(545);
+            Console.WriteLine(lista1.ToString());
+            lista1.Prazni();
+            Console.WriteLine(lista1.ToString());
+
+            Citaj2();
+            Console.WriteLine(lista2.ToString());
+            lista2.NaPocetak(1);
+            Console.WriteLine(lista2.ToString());
+            Console.ReadKey();
+        }
+
+        static void Citaj1()
+        {
+            Console.WriteLine("Unesi broj elemenata liste");
+            int n = int.Parse(Console.ReadLine());
+            Random rnd = new Random();
+            for (int i = 1; i <= n; i++)
+                lista1.NaKraj(rnd.Next(100, 1000));
+        }
+
+        static void Citaj2()
+        {
+            Console.WriteLine("Unesi broj elemenata liste");
+            int n = int.Parse(Console.ReadLine());
+            Random rnd = new Random();
+            for (int i = 1; i <= n; i++)
+                lista2.NaPocetak(rnd.Next(100, 1000));
+        }
+    }
+}
