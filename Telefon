@@ -1,0 +1,161 @@
+Telefon
+1.  Apstraktna klasu Telefon ima sledeće atribute:
+	tip telefonskog broja (mobilni ili fiksni)
+	kod države
+	pozivni broj(037, 060, 064...)
+	iznos pretplate (realan broj, ako korisnik nema ugovorenu pretplatu iznos pretplate je 0)
+	broj minuta razgovora dozvoljenih u okviru pretplate
+	ukupan broj minuta razgovora
+	cena po minutu razgovora van pretplate
+	da li korisnik ima ugovorenu pretplatu (da ili ne)
+Napisati svojstva i potrebne konstruktore
+Napisati metode ToString koja vraća podatke, apstraktnu metodu Racun koja izračunava ukupan račun za telefonske razgovore. Ako korisnik ima ugovorenu pretplatu, račun se izračunava kada se na pretplatu doda broj minuta van pretplate pomnožen sa odgovarajućom cenom, ako nema ugovorenu pretplatu račun za obavljene razgovore se računa broj minuta razgovora pomnožen sa cenom minuta razgovora
+2. Klasa Mobilni koja nasleđuje klasu telefon i ima sledeće atribute:
+	ukupan broj Sms poruka
+	broj Sms poruka u okviru pretplate
+	cena Sms poruke van pretplate
+	ukupna potrošnja interneta u Gb
+	dozvoljena potrošnja interneta u okviru pretplate
+	cena 1 Mb interneta van pretplate
+	Napisati svojstva i potrebne konstruktore
+	Modifikovati metodu Racun tako što pored vrednosti razgovora treba uračunati i vrednost Sms poruka i potrošnju interneta van pretplate.
+3. Klasa Fiksni koja nasleđuju klasu telefon i ima sledeće atribute:
+	cena priključka
+	vrednost dodatnih usluga (identifikacija broja)
+	Napisati svojstva i potrebne konstruktore
+	Modifikovati metodu Racun, tako što pored vrednosti razgovora treba dodati i cenu priključka i vrednosti usluga
+
+4. Proširite klase za sledeće podatke naziv operatera i id korisnika i ime i prezime korisnika.
+
+5. U glavnom programu testirati klase, kreirati nekoliko objekata, ispisati sve podatke za objekte kao i vrednosti računa.
+
+// dopuniti kod
+
+using System;
+
+namespace TelefonApp
+{
+    public abstract class Telefon
+    {
+        Tip tip;
+        string kod, pozivni, broj;
+        bool ugovor;
+        int brojMinuta, ukupanBrojMinuta;
+        float cena, pretplata=0;
+
+        protected Telefon(){ }
+
+        protected Telefon(Tip tip, string kod, string pozivni, string broj, bool ugovor, int brojMinuta, int ukupanBrojMinuta, float cena, float pretplata)
+        {
+            this.tip = tip;
+            this.kod = kod;
+            this.pozivni = pozivni;
+            this.broj = broj;
+            this.ugovor = ugovor;
+            this.brojMinuta = brojMinuta;
+            this.ukupanBrojMinuta = ukupanBrojMinuta;
+            this.cena = cena;
+            this.pretplata = pretplata;
+        }
+
+        public string Kod { get => kod; set => kod = value; }
+        public string Pozivni { get => pozivni; set => pozivni = value; }
+        public string Broj { get => broj; set => broj = value; }
+        public bool Ugovor { get => ugovor; set => ugovor = value; }
+        public int BrojMinuta { get => brojMinuta; set => brojMinuta = value; }
+        public int UkupanBrojMinuta { get => ukupanBrojMinuta; set => ukupanBrojMinuta = value; }
+        public float Cena { get => cena; set => cena = value; }
+        public float Pretplata { get => pretplata; set { if (ugovor) pretplata = value; else pretplata = 0; } }
+        internal Tip Tip { get => tip; set => tip = value; }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+        public float Iznos()
+        {
+            float ukupno;
+            if (ugovor)
+                ukupno = pretplata + (ukupanBrojMinuta - brojMinuta) * cena;
+            else
+                ukupno = ukupanBrojMinuta * cena;
+            return ukupno;
+        }
+        public abstract float Racun();
+    }
+
+    public class Mobilni:Telefon
+    {
+        int ukupnoSmsPoruka, brojSmsPoruka;
+        float cenaSms, ukupanInternet, potrosnjaInterneta, cenaInterneta;
+
+        public Mobilni(int ukupnoSmsPoruka, int brojSmsPoruka, float cenaSms, float ukupanInternet, float potrosnjaInterneta, float cenaInterneta,
+            Tip tip, string kod, string pozivni, string broj, bool ugovor, int brojMinuta, int ukupanBrojMinuta, float cena, float pretplata)
+            : base(tip, kod, pozivni, broj, ugovor, brojMinuta, ukupanBrojMinuta, cena, pretplata)
+        {
+            this.ukupnoSmsPoruka = ukupnoSmsPoruka;
+            this.brojSmsPoruka = brojSmsPoruka;
+            this.cenaSms = cenaSms;
+            this.ukupanInternet = ukupanInternet;
+            this.potrosnjaInterneta = potrosnjaInterneta;
+            this.cenaInterneta = cenaInterneta;
+        }
+
+        public int UkupnoSmsPoruka { get => ukupnoSmsPoruka; set => ukupnoSmsPoruka = value; }
+        public int BrojSmsPoruka { get => brojSmsPoruka; set => brojSmsPoruka = value; }
+        public float CenaSms { get => cenaSms; set => cenaSms = value; }
+        public float UkupanInternet { get => ukupanInternet; set => ukupanInternet = value; }
+        public float PotrosnjaInterneta { get => potrosnjaInterneta; set => potrosnjaInterneta = value; }
+        public float CenaInterneta { get => cenaInterneta; set => cenaInterneta = value; }
+
+        public override float Racun()
+        {
+            return Iznos() + (ukupnoSmsPoruka - brojSmsPoruka) * cenaSms
+                + (ukupanInternet - potrosnjaInterneta) * cenaInterneta;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+    }
+
+    public class Fiksni:Telefon
+    {
+        float cenaPrikljucka, cenaUsluga;
+
+        public Fiksni(float cenaPrikljucka, float cenaUsluga,Tip tip, string kod, string pozivni, string broj, bool ugovor, int brojMinuta, int ukupanBrojMinuta, float cena, float pretplata)
+            : base(tip, kod, pozivni, broj, ugovor, brojMinuta, ukupanBrojMinuta, cena, pretplata)
+        {
+            this.cenaPrikljucka = cenaPrikljucka;
+            this.cenaUsluga = cenaUsluga;
+        }
+
+        public float CenaPrikljucka { get => cenaPrikljucka; set => cenaPrikljucka = value; }
+        public float CenaUsluga { get => cenaUsluga; set => cenaUsluga = value; }
+        public override float Racun()
+        {
+            return Iznos() + cenaPrikljucka + cenaUsluga;
+        }
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+    }
+
+    public enum Tip
+    {
+        fiksni,
+        mobilni
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Telefon t1 = new Mobilni(350,300,5,4*1024,3*1024, 12, Tip.mobilni, "+381", "060","123456",true, 300, 420, 7, 1500);
+            Console.WriteLine(t1);
+            Console.WriteLine(t1.Racun());
+            Console.ReadKey();
+        }
+    }
+}
