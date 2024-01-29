@@ -1,0 +1,93 @@
+/*
+Kompanija poseduje više vozila različitih tipova. Urediti spisak vozila prema godini proizvodnje. Vozila koje komanija ima mogu da budu: automobili, autobusi ili kamioni. 
+Sve što je zajedničko za sva vozila se navodi u definiciji nadklase. Ova klasa je apstraktna. Nije moguće kreirati objekte apstraktne nadklase. Jedno vozilo, kao objekat, mora da bude ili automobil, ili autobus, ili kamion. 
+Podaci moraju da budu zaštićeni - protected, a ne privatni - private. Na ovom mestu prvi put možemo da analiziramo razliku između nivoa pristupa private i protected. Kada je neko polje privatno, ono nije dostupno čak ni izvedenim klasama. Da bi polje bilo vidljivo u izvedenim klasama, a da se zadrži princip enkapsulacije, ono mora da bude protected. 
+Zajedničke metode za sve izvedene klase možemo da navedemo i kompletno realizujemo u nadklasi. Primer takve metode u primeru koji sledi je metoda StarijeOd. U apstraktnoj klasi mogu da se navedu i apstraktne metode. One nemaju telo, već moraju da se realizuju u celosti u izvedenim klasama zato što će se od klase do klase ta realizacija razlikovati zbog specifičnosti svake od njih. 
+U svakoj izvedenoj klasi imamo samo nabrojane posebne atribute i metode, dok ostalo klasa preuzima iz nadklase. 
+Prilikom pisanja konstruktora izvedene klase, moramo prvo da pozovemo konstruktor nad klase  Dakle, automobil je vozilo, pa prvo pozivamo konstruktor nadklase Vozilo, a zatim dodajemo ono što je potrebno posebno za konstruisanje automobila.
+U rešenju nema glavnog programa uraditi
+*/
+
+    public abstract class Vozilo
+    {
+        protected string model, proizvodjac;
+        protected int god;
+        protected string registracija;
+        public Vozilo(string m, string p, int g, string r)
+        {
+            if (m.Equals(string.Empty))
+                throw new Exception("Nema model!");
+            else if (p.Equals(string.Empty))
+                throw new Exception("Nema proizvodjaca!");
+            else if (r.Equals(string.Empty))
+                throw new Exception("Nema registraciju!");
+            else if (g < 1990 || g > 2019) //tekuca godina je 2019
+                throw new Exception("Neispravna godina!");
+            model = m;
+            proizvodjac = p;
+            god = g;
+            registracija = r;
+        }
+        public bool StarijeOd(Vozilo v)
+        {
+            return god < v.god;
+        }
+        public abstract string Info();
+    }
+
+    public class Kamion : Vozilo
+    {
+        private int tezina, tezinaTereta;
+    
+    public Kamion(string m, string p, int g, string r, int t, int tt) : base(m, p, g, r)
+    {
+        if (t < 0 || tt < 0)
+            throw new Exception("Neispravna tezina!");
+        tezina = t;
+        tezinaTereta = tt;
+    }
+    public override string Info()
+    {
+        string s = model + "-" + proizvodjac;
+        s += ", reg: " + registracija;
+        s += ", god: " + god;
+        s += ", tezina: " + tezina + ", teret: " + tezinaTereta;
+        return s;
+    }
+}
+
+    public class Autobus : Vozilo
+    {
+        private int brSedista;
+        public Autobus(string m, string p, int g, string r, int brS) : base(m, p, g, r)
+        {
+            if (brS < 20 || brS > 120)
+                throw new Exception("Neispravan broj sedista!");
+            brSedista = brS;
+        }
+        public override string Info()
+        {
+            string s = model + "-" + proizvodjac;
+            s += ", reg: " + registracija;
+            s += ", god: " + god + ", sedista: " + brSedista;
+            return s;
+        }
+    }
+
+    public class Auto : Vozilo
+    {
+        private int brVrata;
+        public Auto(string m, string p, int g, string r, int brV) : base(m, p, g, r)
+        {
+            if (brV < 2 || brV > 5)
+                throw new Exception("Neispravan broj vrata!");
+            brVrata = brV;
+        }
+        public override string Info()
+        {
+            string s = model + "-" + proizvodjac;
+            s += ", reg: " + registracija;
+            s += ", god: " + god + ", vrata: " + brVrata;
+            return s;
+        }
+    }
