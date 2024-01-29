@@ -1,0 +1,14 @@
+Kalkulator
+
+Napisati klasu Kalkulator. Ova klasa bi trebalo da ima:
+Metodu koja računa i vraća sumu od N (N je ceo broj i daje se u vidu ulaznog argumenta) S(N) = 1+2+3+4+5+...+(N-1)+N
+Metodu koja računa i vraća faktorijel (N je ceo broj i daje se u vidu ulaznog argumenta) N! = 12345...*(N-1)*N
+Metodu koja računa i vraća 2 na N-ti stepen, pri čemu je N ceo broj i daje se u vidu ulaznog argumenta.
+Metodu koja računa i vraća 3 na N-ti stepen, pri čemu je N ceo broj i daje se u vidu ulaznog argumenta.
+Metodu koja računa i vraća X na N-ti stepen pri čemu je N ceo broj, a X realan broj i oba su data u vidu ulaznih argumenata.
+Metodu koja računa i vraća (A+B) na N-ti stepen pri čemu su A, B i N celi brojevi i ulazni argumenti.
+Metodu koja računa i vraća sumu svih Celih brojeva koji se nalaze u intervalu od A do B (uključujući i A i B) pri čemu je A<B, i oba broja su pozitivni celi brojevi. A i B su dati u vidu ulaznog argumenta.
+Metodu koja računa i vraća sumu svih Celih brojeva koji se nalaze u intervalu od A do B (ne uključujući B) pri čemu je A<B, i oba broja su pozitivni celi brojevi. A i B su dati u vidu ulaznog argumenta.
+Metodu koja računa i vraća sumu svih parnih brojeva koji se nalaze u intervalu od A do B uključujući i A i B. A i B su dati u obliku ulaznih argumenata.
+Metodu koja računa i vraća sumu svih brojeva deljivih sa tri koji se nalaze u intervalu od A do B uključujući i A i B. A i B su dati u obliku ulaznih argumenata.
+Metodu koja računa i vraća proizvod svih pozitivnih brojeva koji se nalaze u intervalu od A do B uključujući i A i B. A i B su dati u obliku ulaznih argumenata, a A može biti i manje od nula. Napraviti klasu ProveraKalkulatora (Program) koja Proverava rad klase Kalkulator pozivanjem nekih njenih metoda i ispisivanjem rezultata koji metode vraćaju na ekranu uz odgovarajuću poruku.
