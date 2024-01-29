@@ -1,0 +1,175 @@
+/*
+Zadatak 3.
+U klasi Person napišite metodu GetGrade (koju ustvari ne možete/ne znate napisati u toj klasi) i osigurajte da se metoda mora implementirati u klasama koje nasleđuju Person. Ovo nužno zahteva još neku promenu u klasi Person, koju? Za studenta, metoda će vratiti prosečnu ocenu svih položenih ispita, a za nastavnika ocenu iz studentske ankete. Napišite napišite i metodu (sealed ili readonly?) IsOutstanding() i smestite je u klasu Person. Metoda će vratiti true ako je ocena te osobe veća od 4.5.
+Za deo koda
+Person s1 = new Student(111, "Pero Perić", (short)3, new int[] {5,3,4}); 
+Student s2 = new Student(115, "Ana Anić", (short)1, new int[] {5,5,4}); 
+Teacher t = new Teacher(615, "Mirko Mandić", "OOP", 4.83); 
+Person[] people = new Person[] {s1, s2, t}; 
+Console.WriteLine("Outstanding students and teachers:"); 
+foreach(Person p in people) 
+if (p.IsOutstanding()) 
+Console.WriteLine (p);
+Očekuje sa ovakav ispis:
+Outstanding students and teachers: 
+115, Ana Anić, academicYear=1, grades=5 5 4 615, 
+Mirko Mandić, subject=OOP, teacherGrade=4.83
+Napomena: rešenja su u obliku klasa, organizovati u projekat
+*/
+
+	public abstract class Person
+	{
+
+		private int id;
+		private string name;
+
+		public Person(int id, string name)
+		{
+			this.id = id;
+			this.name = name;
+		}
+
+		public int GetId()
+		{
+			return id;
+		}
+
+		public void SetId(int id)
+		{
+			this.id = id;
+		}
+
+		public string GetName()
+		{
+			return name;
+		}
+
+		public void SetName(string name)
+		{
+			this.name = name;
+		}
+
+		public override string ToString()
+		{
+			return id + ", " + name;
+		}
+
+		public abstract double GetGrade();
+
+		//trebalo bi readonly ali ne prihvata zbog verzije c#
+		public bool IsOutstanding()
+		{
+			if (this.GetGrade() > 4.5)
+				return true;
+			return false;
+		}
+	}
+
+    public class Student : Person
+    {
+
+
+        private short academicYear;
+        private int[] grades;
+
+        public Student(int id, String name, short academicYear, int[] grades) : base(id, name)
+        {
+            this.academicYear = academicYear;
+            this.grades = grades;
+        }
+
+        public short GetAcademicYear()
+        {
+            return academicYear;
+        }
+
+        public void SetAcademicYear(short academicYear)
+        {
+            this.academicYear = academicYear;
+        }
+
+        public int[] GetGrades()
+        {
+            return grades;
+        }
+
+        public void SetGrades(int[] grades)
+        {
+            this.grades = grades;
+        }
+
+        public override string ToString()
+        {
+            // obratiti paznju na string.Join(separator,niz)
+            return base.ToString() + ", academicYear=" + academicYear + ", grades=" + string.Join(" ",grades);
+        }
+
+        public override double GetGrade()
+        {
+            if (grades.Length < 1) return 0;
+            double sum = 0;
+            foreach (int i in grades)
+                sum += i;
+            return sum / grades.Length;
+        }
+    }
+
+    public class Teacher : Person
+    {
+
+        private string subject;
+        private double teacherGrade;
+
+        public Teacher(int id, string name, string subject, double teacherGrade) : base(id, name)
+        {
+            this.subject = subject;
+            this.teacherGrade = teacherGrade;
+        }
+
+        public string GetSubject()
+        {
+            return subject;
+        }
+
+        public void SetSubject(string subject)
+        {
+            this.subject = subject;
+        }
+
+        public double GetTeacherGrade()
+        {
+            return teacherGrade;
+        }
+
+        public void SetTeacherGrade(double teacherGrade)
+        {
+            this.teacherGrade = teacherGrade;
+        }
+        public override string ToString()
+        {
+            return base.ToString() + ", subject=" + subject + ", teacherGrade=" + teacherGrade;
+        }
+        public override double GetGrade()
+        {
+            return teacherGrade;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+			Person s1 = new Student(111, "Pero Peric", (short)3, new int[] { 5, 3, 4 });
+			Student s2 = new Student(115, "Ana Anic", (short)1, new int[] { 5, 5, 4 });
+			Teacher t = new Teacher(615, "Mirko Mandic", "OOP", 4.83);
+
+			Person[] people = new Person[] { s1, s2, t };
+
+			Console.WriteLine("Outstanding students and teachers:");
+			foreach (Person p in  people)
+				if (p.IsOutstanding())
+					Console.WriteLine(p);
+			Console.ReadKey();
+		}
+    }
+  
