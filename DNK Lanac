@@ -18,5 +18,5 @@ Dodavanje se vrši samo ako nova karika ima vrednost 'A', 'C', 'G' ili 'T' i ako
 Potrebno je napraviti klasu TestDNKLanac (Program) koja kreira jedan DNK lanac maksimalne dužine 8 karika i unosi
 u njega elemente ACCGTTTT. Potrebno je ispisati ovaj DNK lanac u regularnom i obrnutom redosledu .
 
-Napomena: obnoviti enum, po potrebi liste ili nizove
+Napomena: obnoviti enum, po potrebi liste ili nizove po potrebi i ostale kolekcije
 */
