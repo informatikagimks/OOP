@@ -1,0 +1,148 @@
+/*
+Kreirati apstraktnu klasu KlasaOblika koja ima apstraktnu metodu Povrsina bez parametra. Napisati klase Kvadrat i Krug koje implementriraju metodu Povrsina na odgovarajuci nacin.
+*/
+namespace Oblici_1
+{
+    public abstract class KlasaOblika
+    {
+        public abstract float Povrsina();
+    }
+
+    public class Kvadrat : KlasaOblika
+    {
+        float a;
+        public Kvadrat(float a)
+        {
+            this.a = a;
+        }
+        public override float Povrsina() { return a * a; }
+    }
+
+    public class Krug : KlasaOblika
+    {
+        float r;
+        public Krug(float r)
+        {
+            this.r = r;
+        }
+        public override float Povrsina() { return r * r * (float)Math.PI; }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Kvadrat k1 = new Kvadrat(5);
+            Console.WriteLine(k1.Povrsina());
+            Krug c1 = new Krug(5);
+            Console.WriteLine(c1.Povrsina());
+            Console.ReadKey();
+        }
+    }
+}
+
+/*
+Kreirati apstraktnu klasu KlasaOblika koja ima atribut realan broj x i koja ima apstraktnu metodu Povrsina sa parametrom x koji predstavlja duzinu jedne stranice. Napisati klase Kvadrat i Pravougaonik koje implementriraju metodu Povrsina na odgovarajuci nacin.
+*/
+namespace Oblici_2
+{
+    abstract class KlasaOblika
+    {
+        float x;
+        public float X
+        {
+            get => x; set => x = value;
+        }
+        public KlasaOblika(float x) { this.x = x; }
+        public abstract float P(float x);
+    }
+
+    class Kvadrat:KlasaOblika
+    {
+        public Kvadrat(float x):base(x) { }
+
+        public override float P(float x)
+        {
+            return x * x;
+        }
+    }
+
+    class Pravougaonik : KlasaOblika
+    {
+        float y;
+        public Pravougaonik(float x, float y) : base(x) { }
+
+        public override float P(float x)
+        {
+            return base.X * y;
+        }
+
+        public float P()  //kako pozvati ovu metodu u main-u
+        {
+            return base.X * y;
+        }
+
+        public float P(float x, float y) //kako pozvati ovu metodu u main-u
+        {
+            return x * y;
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            KlasaOblika k1 = new Kvadrat(5);
+            Console.WriteLine(k1.P(5));
+            KlasaOblika p1 = new Pravougaonik(4, 5);
+            Console.WriteLine(p1.P(4));    //ovde će biti 0 ?????
+            Console.ReadKey();
+        }
+    }
+}
+/*
+Kreirati klasu KlasaOblika koja ima atribut realan broj x i koja ima metodu Povrsina sa parametrom x koji predstavlja duzinu jedne stranice. Napisati klase Kvadrat i Pravougaonik koje implementriraju metodu Povrsina na odgovarajuci nacin.
+*/
+namespace Oblici_3
+{
+    class KlasaOblika
+    {
+        float x;
+        public float X {  get=>x; set=>x=value; }
+        public KlasaOblika(float x)
+        {
+            this.x = x;
+        }   
+        public virtual float P(float x)
+        {
+            return x * x;
+        }
+    }
+
+    class Kvadrat : KlasaOblika
+    {
+        public Kvadrat(float x):base(x) { }
+        
+    }
+
+    class Pravougaonik : KlasaOblika
+    {
+        float y;
+        public Pravougaonik(float x, float y):base(x) { this.y = y; }
+
+        public new float P(float x, float y) {  return y*x; }
+
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Kvadrat k1 = new Kvadrat(5);
+            Console.WriteLine(k1.P(5));
+
+            Pravougaonik p1 = new Pravougaonik(4,5);
+            Console.WriteLine(p1.P(5,4));  //ispisace 20 ovo je overloadovan metod
+
+            Console.ReadKey();
+        }
+    }
+}
+
