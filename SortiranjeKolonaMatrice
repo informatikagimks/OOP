@@ -1,0 +1,132 @@
+using System;
+using System.Collections.Generic;
+
+/*
+ * Napisati program koji sortira kolone matrice nxn po najevećem elementu kolone
+ * u rastućem redosledu, ne koristiti pomocne nizove
+ */
+namespace SortiranjeKolonaMatrice_App
+{
+    class Row
+    {
+        IList<int> row;
+        int n;
+        public Row(int n) { 
+            row = new List<int>(n);
+            this.n = n;
+        }
+
+        public int this[int i]
+        {
+            get { return row[i]; }
+            set { row[i] = value; }
+        }
+
+        public void Add() { 
+            Random r = new Random();
+            for(int i = 0; i < n; i++)
+            {
+                row.Add(r.Next(1,100));
+            }
+        }
+
+        public override string ToString()
+        {
+            string str=string.Empty;
+            for(int i = 0;i < row.Count;i++)
+            {
+                str += row[i].ToString()+"\t";
+            }
+            return str;
+        }
+
+    }
+    class Matrix
+    {
+        IList<Row> mat;
+        int n;
+        public Matrix(int n)
+        {
+            this.n = n;
+            mat=new List<Row>(n);
+        }
+
+        public void AddRow()
+        {
+            
+            for (int i = 0; i < n; i++)
+            {
+                Row row = new Row(n);
+                row.Add();
+                mat.Add(row);
+            }
+        }
+
+        public int MaxInColumns(int col)
+        {
+            int maxc = int.MinValue;
+            for(int i = 0; i < n; i++)
+            {
+                Row r = mat[i];
+                if (r[col] >= maxc)
+                {
+                    maxc = r[col];
+                }
+            }
+            return maxc;
+        }
+
+        public void SwapColumns(int c1, int c2)
+        {
+            int temp;
+            for (int r = 0; r < n; r++)
+            {
+                Row row = mat[r];
+                temp = row[c1];
+                row[c1]= row[c2];
+                row[c2] = temp;
+            }
+        }
+
+        public void SortColumns()
+        {
+            for (int c1 = 0; c1 < n; c1++)
+            {
+                int max_c1 = MaxInColumns(c1);
+                for (int c2 = c1 + 1; c2 < n; c2++)
+                {
+                    int max_c2 = MaxInColumns(c2);
+                    if (max_c2 <= max_c1)
+                    {
+                        SwapColumns(c1,c2);
+                        max_c1 = MaxInColumns(c1);
+                        max_c2 = MaxInColumns(c2);
+                    }
+                }
+
+            }
+        }
+        public override string ToString()
+        {
+            String str=string.Empty;
+            for(int i = 0; i < n; i++)
+            {
+                Row row = mat[i];
+                str += row.ToString()+"\n";
+            }
+            return str;
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Matrix m = new Matrix(4);
+            m.AddRow();
+            Console.WriteLine(m);
+            m.SortColumns();
+            Console.WriteLine(m);
+            Console.ReadLine();
+        }
+    }
+}
