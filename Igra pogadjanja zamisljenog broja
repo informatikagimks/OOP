@@ -1,0 +1,146 @@
+/*
+https://petlja.org/kurs/11202/15/7703
+*/
+
+using System;
+
+
+namespace IgraPogadjanjaZamisljenogBroja
+{
+    abstract class Igra
+    {
+        int broj_pokusaja;
+        bool pogodio = false;
+        int tezina;
+
+        public int Broj_pokusaja { get => broj_pokusaja; set => broj_pokusaja = value; }
+        public bool Pogodio { get => pogodio; set => pogodio = value; }
+
+        public Igra()
+        {
+            broj_pokusaja = 0;
+        }
+        public abstract void Pocni(int tezina);
+        public abstract string Odgovori(int pokusaj);
+    }
+
+    class Level1 : Igra
+    {
+        int zamisljeni;
+        public override void Pocni(int tezina)
+        {
+            if (tezina==1) { 
+            Random r = new Random();
+            zamisljeni = r.Next(1, 100);
+            }
+            else
+            {
+                throw new Exception("Pogresan unos");
+            }
+        }
+
+
+        public override string Odgovori(int pokusaj)
+        {
+            Broj_pokusaja++;
+
+            if (pokusaj > zamisljeni)
+            {
+                return "Zamisljeni broj je manji";
+            }
+            else if (pokusaj < zamisljeni)
+            {
+                return "Zamisljeni broj je veci";
+            }
+            else
+            {
+                Pogodio = true;
+                return "Cestitam, pogodile ste iz " + Broj_pokusaja.ToString() + " pokusaja.";
+
+            }
+        }
+    }
+
+    class Level2 : Igra
+    {
+        int zamisljeni;
+        int min, max;
+
+        public Level2()
+        {
+            min = 1;
+            max = 100;
+        }
+        public override void Pocni(int tezina)
+        {
+            if (tezina == 2)
+            {
+                Random r = new Random();
+                zamisljeni = r.Next(min, max);
+            }
+            else { throw new Exception("Pogresan unos"); }
+        }
+
+
+        public override string Odgovori(int pokusaj)
+        {
+            Broj_pokusaja++;
+
+
+            if (max - pokusaj < pokusaj - min)
+            {
+                max = pokusaj;
+                return "Zamisljeni broj je manji";
+
+
+            }
+            else if (max - pokusaj > pokusaj - min)
+            {
+                min = pokusaj;
+                return "Zamisljeni broj je veci";
+            }
+
+            else
+            {
+                Pogodio = true;
+                return "Cestitam, pogodile ste iz " + Broj_pokusaja.ToString() + " pokusaja.";
+
+            }
+
+        }
+    }
+
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("unesi tezinu igre: ");
+            int t=int.Parse(Console.ReadLine());
+            Igra igra;
+            if (t == 1)
+            {
+                igra = new Level1();
+                igra.Pocni(1);
+            }
+            else
+            {
+                igra = new Level2();
+                igra.Pocni(2);
+            }
+
+            Console.Write("Igrac: ");
+            int pokusaj = int.Parse(Console.ReadLine());
+            while (!igra.Pogodio)
+            {
+                Console.WriteLine(igra.Odgovori(pokusaj));
+                if (!igra.Pogodio)
+                {
+                    Console.Write("Igrac: ");
+                    pokusaj = int.Parse(Console.ReadLine());
+                }
+            }
+            Console.ReadKey();
+        }
+    }
+}
