@@ -1,0 +1,84 @@
+using System;
+
+/*
+ * Kreirati apstraktnu klasu Vozilo koja ima cetiri atributa naziv, pređeni kilometri (kilometraža)
+ * i potrošeno goriva(litara) i cena po litru, zatim apstraktne metode Potrosnja koja izračunava
+ * potrošnju na 100 km i UkupnaCena koja izračunava ukupnu cenu za 100 km
+ * metodu ToString koja ispisuje vrednosti za Potrošnju i UkupnuCenu
+ * Izvedena klasa PutnickoVozilo izračunava potrošnju goriva tako što na potrošnju na 100 km
+ * koja se pomnoži sa cenom goriva po litru dodaje 5% od pređenih kilometara a na ukupnu cenu
+ * dodaje 10% ukupne cene
+ * Izvedena klasa MotornoVozilo nema dodavanje procenata kao PutnickoVozilo
+ * 
+ * */
+namespace Vozilo
+{
+    public abstract class Vozilo
+    {
+        protected double kilometraza;
+        protected double potroseno_goriva;
+        protected double cena_goriva;
+        protected string name;
+        public Vozilo(string name, double kilometraza, double potroseno_goriva, double cena_goriva)
+        {
+            this.name = name;
+            this.kilometraza = kilometraza;
+            this.cena_goriva = cena_goriva;
+            this.potroseno_goriva = potroseno_goriva;
+        }
+
+        public abstract double Potrosnja();
+        public abstract double UkupnaCena();
+
+        public override string ToString()
+        {
+            return "Naziv = "+name+" Potrosnja = " + Potrosnja().ToString() + " Ukupna cena = " + UkupnaCena().ToString();
+        }
+
+    }
+
+    public class MotornoVozilo:Vozilo{
+        public MotornoVozilo(string name, double kilometraza, double potroseno_goriva, double cena_goriva)
+        :base(name, kilometraza, potroseno_goriva, cena_goriva)
+        { }
+
+        public override double Potrosnja() {
+            return 100 * potroseno_goriva / kilometraza;
+        }
+
+        public override double UkupnaCena()
+        {
+            return Potrosnja()*cena_goriva;
+        }
+
+    }
+
+    public class PutnickoVozilo : Vozilo
+    {
+        public PutnickoVozilo(string name, double kilometraza, double potroseno_goriva, double cena_goriva)
+        : base(name, kilometraza, potroseno_goriva, cena_goriva)
+        { }
+
+        public override double Potrosnja()
+        {
+            return (100 * potroseno_goriva / kilometraza)*1.05;
+        }
+
+        public override double UkupnaCena()
+        {
+            return (Potrosnja() * cena_goriva)*1.10;
+        }
+
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Vozilo v1 = new MotornoVozilo("vozilo 1", 70, 15, 125);
+            Console.WriteLine(v1);
+            Vozilo v2 = new PutnickoVozilo("vozilo 2", 50, 10, 135);
+            Console.WriteLine(v2);
+            Console.ReadKey();
+        }
+    }
+}
