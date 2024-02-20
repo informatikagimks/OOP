@@ -1,0 +1,76 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+/*
+ * Kreirati apstraktnu klasu Figura koja ima kao atribut jednu dimenziju figure
+ * i apstraktne metode povrsinu i obim, zatim i metodu ToString koja vraća vrednosti povrsine i
+ * obima
+ * Izvedene klase Krug, Kvadratnasleđuju
+ * apstraktnu klasu. U izvedenoj klasi potrebno je dodati specifične atribute za svaku od 
+ * figura ako ih ima i implementirati metode Povrsina i Obima
+ * Testirati klase i metode u glavnom programu
+ */
+namespace _2DFigure
+{
+    public abstract class Figura
+    {
+        protected double a;
+
+        public Figura(int a) { 
+            this.a = a; 
+        }
+
+        
+        public abstract double Povrsina();
+        public abstract double Obim();
+
+        public override string ToString()
+        {
+            return "Povrsina = " + Povrsina().ToString() + ", Obim = " + Obim().ToString();
+        }
+    }
+
+    public class Krug:Figura{
+
+        public Krug(int a):base(a) { }
+
+        public override double Povrsina()
+        {
+            return a * a * Math.PI;
+        }
+
+        public override double Obim()
+        {
+            return 2 * a * Math.PI;
+        }
+    }
+
+    public class Kvadrat : Figura
+    {
+
+        public Kvadrat(int a) : base(a) { }
+
+        public override double Povrsina()
+        {
+            return a * a ;
+        }
+
+        public override double Obim()
+        {
+            return 4 * a;
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Figura kvadrat = new Kvadrat(5);
+            Console.WriteLine(kvadrat);
+            Figura krug = new Krug(10);
+            Console.WriteLine(krug);
+            Console.ReadKey();
+        }
+    }
+}
